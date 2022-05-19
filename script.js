@@ -13,6 +13,18 @@ async function getWeather(location, units) {
   );
   const weatherData = await response.json();
   console.log(weatherData);
+  return weatherData;
 }
 
-handleError(getWeather('Denver', 'imperial'));
+async function formattedData(location) {
+  const data = await location;
+  this.name = data.name;
+  console.log(this.name);
+  this.temp = data.main.temp;
+  console.log(this.temp);
+  this.description = data.weather[0].description;
+  console.log(this.description);
+}
+
+const denver = getWeather('Denver', 'imperial');
+formattedData(denver);
