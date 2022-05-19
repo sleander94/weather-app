@@ -9,6 +9,7 @@ async function getWeather(location, units) {
     return weatherData;
   } catch (error) {
     console.log(error);
+    alert(error);
   }
 }
 
@@ -21,6 +22,16 @@ async function formattedData(location) {
   this.description = data.weather[0].description;
   console.log(this.description);
 }
+
+const search = document.createElement('input');
+document.body.appendChild(search);
+const searchSubmit = document.createElement('button');
+searchSubmit.textContent = 'Search';
+searchSubmit.addEventListener('click', () => {
+  const newData = getWeather(search.value, 'imperial');
+  formattedData(newData);
+});
+document.body.appendChild(searchSubmit);
 
 const denver = getWeather('Denver', 'imperial');
 formattedData(denver);
