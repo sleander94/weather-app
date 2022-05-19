@@ -5,33 +5,52 @@ async function getWeather(location, units) {
       { mode: 'cors' }
     );
     const weatherData = await response.json();
-    console.log(weatherData);
     return weatherData;
   } catch (error) {
     console.log(error);
-    alert(error);
   }
 }
 
-async function formattedData(location) {
-  const data = await location;
-  this.name = data.name;
-  console.log(this.name);
-  this.temp = data.main.temp;
-  console.log(this.temp);
-  this.description = data.weather[0].description;
-  console.log(this.description);
+async function formatWeather(location) {
+  try {
+    const data = await location;
+    const info = {};
+    info.name = data.name;
+    info.temp = data.main.temp;
+    info.description = data.weather[0].description;
+    return info;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-const search = document.createElement('input');
-document.body.appendChild(search);
-const searchSubmit = document.createElement('button');
-searchSubmit.textContent = 'Search';
-searchSubmit.addEventListener('click', () => {
-  const newData = getWeather(search.value, 'imperial');
-  formattedData(newData);
-});
-document.body.appendChild(searchSubmit);
+function addSearchbar(element) {
+  const search = document.createElement('input');
+  element.appendChild(search);
+  const searchSubmit = document.createElement('button');
+  searchSubmit.textContent = 'Search';
+  searchSubmit.addEventListener('click', () => {
+    displayWeather(search.value, document.body);
+  });
+  element.appendChild(searchSubmit);
+}
 
-const denver = getWeather('Denver', 'imperial');
-formattedData(denver);
+async function displayWeather(data, element) {
+  try {
+    const weather = await formatWeather(getWeather(data, 'imperial'));
+    console.log(weather);
+    for (let i = 0; i < Object.keys(weather).length; i++) {
+      const body = document.querySelector('body');
+      const keyDiv = document.createElement('div');
+      keyDiv.textContent = Object.values(weather)[i];
+      body.appendChild(keyDiv);
+    }
+  } catch (error) {
+    console.log(error);
+    alert('City not found.');
+  }
+}
+
+const body = document.querySelector('body');
+
+addSearchbar(body);
