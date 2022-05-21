@@ -5,6 +5,7 @@ async function getWeather(location, units) {
       { mode: 'cors' }
     );
     const weatherData = await response.json();
+    console.log(weatherData);
     return weatherData;
   } catch (error) {
     console.log(error);
@@ -16,12 +17,24 @@ async function formatWeather(weather) {
     const data = await weather;
     const info = {};
     info.name = data.name;
+    info.description = data.weather[0].description;
     if (units === 'imperial') {
       info.temp = `${data.main.temp} °F`;
     } else {
       info.temp = `${data.main.temp} °C`;
     }
-    info.description = data.weather[0].description;
+    info.feelsLike = `Feels like: ${data.main.feels_like}°`;
+    info.humidity = `Humidity: ${data.main.humidity}%`;
+    if (units === 'imperial') {
+      info.wind = `Wind: ${data.wind.speed} mph`;
+    } else {
+      info.wind = `Wind: ${data.wind.speed} m/s`;
+    }
+    let date = new Date((data.dt + data.timezone) * 1000);
+
+    date.setHours(date.getHours() - 2);
+    info.date = date.toString().slice(0, 24);
+
     return info;
   } catch (error) {
     console.log(error);
