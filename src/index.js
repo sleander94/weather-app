@@ -1,4 +1,4 @@
-import { compareAsc, format } from 'date-fns';
+import { format } from 'date-fns';
 
 async function getWeather(location, units) {
   try {
@@ -32,10 +32,7 @@ async function formatWeather(weather) {
     } else {
       info.wind = `Wind: ${data.wind.speed} m/s`;
     }
-    let date = new Date((data.dt + data.timezone) * 1000);
-    console.log(date);
-    date.setHours(date.getHours() + 6);
-    info.date = date.toString().slice(0, 24);
+    info.date = format(new Date(data.dt * 1000), 'PPpp');
     return info;
   } catch (error) {
     console.log(error);
