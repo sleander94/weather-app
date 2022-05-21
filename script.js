@@ -31,10 +31,9 @@ async function formatWeather(weather) {
       info.wind = `Wind: ${data.wind.speed} m/s`;
     }
     let date = new Date((data.dt + data.timezone) * 1000);
-
-    date.setHours(date.getHours() - 2);
+    console.log(date);
+    date.setHours(date.getHours() + 6);
     info.date = date.toString().slice(0, 24);
-
     return info;
   } catch (error) {
     console.log(error);
