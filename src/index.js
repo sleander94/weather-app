@@ -36,7 +36,7 @@ async function formatWeather(weather) {
     } else {
       info.wind = `Wind: ${data.wind.speed} m/s`;
     }
-    info.date = format(new Date(data.dt * 1000), 'PPpp');
+    info.date = format(new Date(data.dt * 1000), 'PPpp zzzz');
     return info;
   } catch (error) {
     console.log(error);
