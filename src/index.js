@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { assignIcon } from './icons.js';
 
 async function getWeather(location, units) {
   try {
@@ -20,6 +21,9 @@ async function formatWeather(weather) {
     const info = {};
     info.name = data.name;
     info.description = data.weather[0].description;
+    const icon = document.createElement('img');
+    icon.src = assignIcon(data.weather[0].icon);
+    info.icon = icon;
     if (units === 'imperial') {
       info.temp = `${data.main.temp} °F`;
     } else {
@@ -48,7 +52,12 @@ async function displayWeather(data, units, element) {
     for (let i = 0; i < Object.keys(weather).length; i++) {
       const keyDiv = document.createElement('div');
       keyDiv.classList.toggle(`${Object.keys(weather)[i]}`);
-      keyDiv.textContent = Object.values(weather)[i];
+      if (keyDiv.classList.contains('icon')) {
+        element.appendChild(Object.values(weather)[i]);
+      } else {
+        keyDiv.textContent = Object.values(weather)[i];
+      }
+
       element.appendChild(keyDiv);
     }
   } catch (error) {
