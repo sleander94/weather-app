@@ -1,3 +1,4 @@
+import './style.css';
 import { format } from 'date-fns';
 import { assignIcon } from './icons.js';
 
@@ -53,11 +54,10 @@ async function displayWeather(data, units, element) {
       const keyDiv = document.createElement('div');
       keyDiv.classList.toggle(`${Object.keys(weather)[i]}`);
       if (keyDiv.classList.contains('icon')) {
-        element.appendChild(Object.values(weather)[i]);
+        keyDiv.appendChild(Object.values(weather)[i]);
       } else {
         keyDiv.textContent = Object.values(weather)[i];
       }
-
       element.appendChild(keyDiv);
     }
   } catch (error) {
@@ -98,16 +98,14 @@ function addUnitButton(element) {
   const unitButton = document.createElement('button');
   unitButton.classList.toggle('unitButton');
   unitButton.type = 'button';
-  unitButton.textContent = '°F';
+  unitButton.textContent = 'Imperial / Metric';
   unitButton.addEventListener('click', () => {
     const currentLocation = weatherContainer.querySelector('div').textContent;
     if (units === 'imperial') {
       units = 'metric';
-      unitButton.textContent = '°C';
       displayWeather(currentLocation, units, weatherContainer);
     } else {
       units = 'imperial';
-      unitButton.textContent = '°F';
       displayWeather(currentLocation, units, weatherContainer);
     }
   });
